@@ -23,7 +23,7 @@ if [[ ${PROGRAM} != "pax" ]]; then
 
     # Re-enable for cax only -PdP 30/06/2017
     if [[ ${PROGRAM} == "cax" ]]; then
-        LATEST_PAX_TAG=`(cd ${DIR}/pax; git tag --sort=version:refname | tail -n1)`
+        LATEST_PAX_TAG=$(cd ${DIR}/pax; git tag --sort=version:refname | tail -n1)
         source activate pax_${LATEST_PAX_TAG}
         cd ${DIR}/${PROGRAM}_deploy
         python setup.py install
@@ -41,10 +41,10 @@ cd ${AXDIR}
 git pull
 
 # Get latest tag in repository
-LATEST_TAG=`(git tag --sort=version:refname | tail -n1)`
+LATEST_TAG=$(git tag --sort=version:refname | tail -n1)
 
 # Get current conda environments (currently 1 for each pax version)
-AVAILABLE_TAGS=(`conda env list | grep pax_ | cut -f1 -d' '`)
+AVAILABLE_TAGS=($(conda env list | grep pax_ | cut -f1 -d' '))
 
 echo "Latest tag: " ${LATEST_TAG}
 echo "Available tags: " ${AVAILABLE_TAGS[@]}
@@ -77,7 +77,7 @@ if [[ ${LATEST_TAG} != "" ]]; then
     # Also install cax and hax in this new environment
     for ax in cax hax lax
     do
-       cd ${AXDIR}; git pull; python setup.py install
+       cd ${DIR}/${ax}; git pull; python setup.py install
     done
 
     # Hard link custom activation scripts
